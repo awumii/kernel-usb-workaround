@@ -1,0 +1,7 @@
+[package]
+name = "kernel-usb-workaround"
+version = "1.0.0"
+edition = "2021"
+
+[dependencies]
+rmesg = "1.0.0"
