@@ -1,11 +1,16 @@
-use std::{fs::File, io::Write};
+use std::{fs::File, io::Write, thread, time::Duration};
 use rmesg;
 
 fn main() {
+    // Wait for 30 seconds to allow dmesg errors to stack up.
+    // I tried to do this in the systemd service but seems to be more reliable.
+    thread::sleep(Duration::from_secs(30));
+
     // read kernel logs
     let entries = rmesg::log_entries(rmesg::Backend::Default, true).unwrap();
 
-    for entry in entries {
+    // reverse the loop because only the recent errors are relevant.
+    for entry in entries.into_iter().rev() {
         // The error message can appear as "usb 2-4: device descriptor read/8, error -71", check for the part that always appears.
         if entry.message.contains("device descriptor read") {
             // Get the device, eg. "2-4:"
@@ -32,25 +37,3 @@ fn disable_port(port: u8) {
     }
     
 }
-
-/* I think i was close to figuring out how to do this with rusb, but it is not exactly the right thing.
-fn disable_port(port: u8) {
-    for device in rusb::devices().unwrap().iter() {
-        if device.port_number() == port {
-            let mut handle: rusb::DeviceHandle<rusb::GlobalContext> = device.open().unwrap();
-            handle.detach_kernel_driver(0).unwrap();
-            handle.claim_interface(0).unwrap();
-
-            let _ = handle.write_control(
-                request_type(Direction::Out, RequestType::Vendor, Recipient::Device),
-                0x00,
-                0x00,
-                0x00,
-                &[0x00],
-                Duration::from_secs(120)
-            );
-            break;
-        }
-    }
-}
-*/

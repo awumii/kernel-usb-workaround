@@ -1,15 +1,14 @@
 # Placed in /etc/systemd/system/kernel-usb-workaround.service
-
 [Unit]
-Description=Disable malfunctioning usb ports
-
-[Timer]
-OnBootSec=2min
+Description=Kernel USB Workaround Service
+After=network.target
 
 [Service]
-User=root
-Type=oneshot
+Type=simple
 ExecStart=/usr/local/bin/kernel-usb-workaround
+User=root
+Restart=on-failure
+RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target
