@@ -7,7 +7,7 @@ fn main() {
     thread::sleep(Duration::from_secs(30));
 
     // read kernel logs
-    let entries = rmesg::log_entries(rmesg::Backend::Default, true).unwrap();
+    let entries = rmesg::log_entries(rmesg::Backend::KLogCtl, true).unwrap();
 
     // reverse the loop because only the recent errors are relevant.
     for entry in entries.into_iter().rev() {
