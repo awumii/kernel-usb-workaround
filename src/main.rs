@@ -2,10 +2,6 @@ use std::{fs::File, io::Write, thread, time::Duration};
 use rmesg;
 
 fn main() {
-    // Wait for 30 seconds to allow dmesg errors to stack up.
-    // I tried to do this in the systemd service but seems to be more reliable.
-    thread::sleep(Duration::from_secs(30));
-
     // read kernel logs
     let entries = rmesg::log_entries(rmesg::Backend::KLogCtl, true).unwrap();
 
