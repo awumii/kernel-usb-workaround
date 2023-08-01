@@ -1,7 +1,7 @@
 # Maintainer: awumii <awumii@protonmail.com>
 
 pkgname=kernel-usb-workaround
-pkgver=1.0.0
+pkgver=1.0.0.r2.g0c5a492
 pkgrel=1
 pkgdesc='Workaround for malfunctioning usb devices.'
 url='https://github.com/awumii/kernel-usb-workaround'
@@ -23,7 +23,7 @@ package() {
   install -Dm644 kernel-usb-workaround.service "${pkgdir}/etc/systemd/system/kernel-usb-workaround.service"
 }
 
-post_install {
+post_install() {
   echo '>> Run the service using: systemctl enable --now kernel-usb-workaround.service'
 }
 
