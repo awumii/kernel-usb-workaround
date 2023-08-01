@@ -1,4 +1,4 @@
-use std::{fs::File, io::Write, thread, time::Duration};
+use std::{fs::File, io::Write};
 use rmesg;
 
 fn main() {
