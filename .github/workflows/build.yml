@@ -6,20 +6,20 @@ on:
   pull_request:
     branches: [ "master" ]
 
-env:
-  CARGO_TERM_COLOR: always
-
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
+    
+    container:
+      image: archlinux
+      options: --privileged
+    
     steps:
-    - uses: actions/checkout@v3
-    - name: Build
-      run: cargo build --release
+    - name: Build Arch Linux package
+      uses: FFY00/build-arch-package@v1
+      with:
+        PKGBUILD: PKGBUILD
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.2
       with:
-    # Artifact name
-        path: target/release/kernel-usb-workaround
+        path: $HOME/arch-packages
